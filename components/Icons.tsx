@@ -48,3 +48,15 @@ export const TrashIcon: React.FC<IconProps> = ({ className, size = 24 }) => (
     <path d="M280-120q-33 0-56.5-23.5T200-200v-520h-40v-80h200v-40h240v40h200v80h-40v520q0 33-23.5 56.5T680-120H280Zm400-600H280v520h400v-520ZM360-280h80v-360h-80v360Zm160 0h80v-360h-80v360ZM280-720v520-520Z"/>
   </svg>
 );
+
+export const MoonIcon: React.FC<IconProps> = ({ className, size = 24 }) => (
+  <svg xmlns="http://www.w3.org/2000/svg" height={size} viewBox="0 -960 960 960" width={size} fill="currentColor" className={className}>
+    <path d="M480-120q-150 0-255-105T120-480q0-150 105-255t255-105q14 0 27.5 1t26.5 3q-41 29-65.5 75.5T444-660q0 90 63 153t153 63q55 0 101-24.5t75-65.5q2 13 3 26.5t1 27.5q0 150-105 255T480-120Z"/>
+  </svg>
+);
+
+export const SunIcon: React.FC<IconProps> = ({ className, size = 24 }) => (
+  <svg xmlns="http://www.w3.org/2000/svg" height={size} viewBox="0 -960 960 960" width={size} fill="currentColor" className={className}>
+    <path d="M480-360q-60 0-102-42t-42-102q0-60 42-102t102-42q60 0 102 42t42 102q0 60-42 102t-102 42ZM192-432H60v-96h132v96Zm696 0h-132v-96h132v96ZM480-792v-132h96v132h-96Zm0 696v-132h96v132h-96Zm-268-656L298-738l76 76-84 84-76-76Zm568 568L738-298l84 84 76-76-84-84Zm76-268L738-480l76-76 84 84-76 76ZM298-738L224-814l84-84 76 76-84 84Z"/>
+  </svg>
+);

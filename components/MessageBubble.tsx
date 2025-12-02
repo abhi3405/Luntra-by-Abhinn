@@ -1,25 +1,32 @@
 import React from 'react';
 import { Message, Role } from '../types';
-import { BotIcon, UserIcon, SparkleIcon } from './Icons';
+import { UserIcon } from './Icons';
 import MarkdownRenderer from './MarkdownRenderer';
 
 interface MessageBubbleProps {
   message: Message;
+  theme?: 'light' | 'dark';
 }
 
-const MessageBubble: React.FC<MessageBubbleProps> = ({ message }) => {
+const MessageBubble: React.FC<MessageBubbleProps> = ({ message, theme = 'dark' }) => {
   const isUser = message.role === Role.USER;
 
   return (
-    <div className={`flex w-full ${isUser ? 'justify-end' : 'justify-start'} mb-4 px-4 md:px-0 group`}>
-      <div className={`flex max-w-[90%] md:max-w-3xl gap-3 ${isUser ? 'flex-row-reverse' : 'flex-row'}`}>
+    <div className={`flex w-full ${isUser ? 'justify-end' : 'justify-start'} mb-4 group`}>
+      <div className={`flex max-w-[85%] gap-3 ${isUser ? 'flex-row-reverse' : 'flex-row'}`}>
         
         {/* Avatar */}
         <div className={`
-          flex-shrink-0 w-8 h-8 rounded-full flex items-center justify-center self-start mt-1 shadow-sm
-          ${isUser ? 'bg-[#D0BCFF] text-[#381E72]' : 'bg-transparent text-[#D0BCFF]'}
+          flex-shrink-0 w-7 h-7 rounded-full flex items-center justify-center self-start mt-0.5 transition-colors
+          ${isUser 
+            ? 'bg-[#D0BCFF] text-[#381E72]' 
+            : theme === 'light'
+            ? 'bg-gray-200 text-gray-700'
+            : 'bg-[#2B2930] text-[#E6E0E9]'
+          }
         `}>
-          {isUser ? <UserIcon size={16} /> : <SparkleIcon size={20} />}
+          {isUser && <UserIcon size={16} />}
+          {!isUser && <span className="text-xs font-semibold">AI</span>}
         </div>
 
         {/* Content Bubble */}
@@ -27,14 +34,13 @@ const MessageBubble: React.FC<MessageBubbleProps> = ({ message }) => {
             flex-1 min-w-0 flex flex-col
             ${isUser ? 'items-end' : 'items-start'}
         `}>
-            {/* Name Label - Only show for Bot on first message of group potentially, simplified here */}
-            {!isUser && <div className="text-[11px] text-[#CAC4D0] mb-1 ml-1">Luntra</div>}
-
             <div className={`
-                px-5 py-3.5 text-[15px] leading-relaxed shadow-sm
+                px-4 py-2.5 text-sm leading-relaxed rounded-lg transition-colors
                 ${isUser 
-                  ? 'bg-[#4F378B] text-[#EADDFF] rounded-[20px] rounded-tr-sm' 
-                  : 'bg-[#2B2930] text-[#E6E0E9] rounded-[20px] rounded-tl-sm'
+                  ? 'bg-[#D0BCFF] text-[#381E72]' 
+                  : theme === 'light'
+                  ? 'bg-gray-100 text-gray-900'
+                  : 'bg-[#2B2930] text-[#E6E0E9]'
                 }
             `}>
                 {isUser ? (
@@ -43,11 +49,6 @@ const MessageBubble: React.FC<MessageBubbleProps> = ({ message }) => {
                     <MarkdownRenderer content={message.content} />
                 )}
             </div>
-            
-            {/* Timestamp or Status (Optional) */}
-            {/* <div className="text-[10px] text-gray-500 mt-1 opacity-0 group-hover:opacity-100 transition-opacity">
-                {new Date(message.timestamp).toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'})}
-            </div> */}
         </div>
 
       </div>

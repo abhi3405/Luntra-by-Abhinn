@@ -1,0 +1,57 @@
+<svg viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg">
+  <!-- Chat bubble background -->
+  <path d="M 100 20 C 145 20 180 55 180 100 C 180 145 145 180 100 180 C 90 180 80 178 70 175 L 30 195 L 40 155 C 25 140 20 120 20 100 C 20 55 55 20 100 20 Z" 
+        fill="none" stroke="black" stroke-width="8" stroke-linejoin="round" stroke-linecap="round"/>
+  
+  <!-- Circuit pattern -->
+  <g stroke="black" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round">
+    <!-- Top left branch -->
+    <line x1="60" y1="60" x2="75" y2="60"/>
+    <circle cx="60" cy="60" r="3" fill="black"/>
+    <circle cx="75" cy="60" r="3" fill="black"/>
+    
+    <!-- Second line -->
+    <line x1="60" y1="80" x2="90" y2="80"/>
+    <circle cx="60" cy="80" r="3" fill="black"/>
+    <circle cx="75" cy="80" r="3" fill="black"/>
+    <circle cx="90" cy="80" r="3" fill="black"/>
+    <line x1="75" y1="80" x2="75" y2="95"/>
+    
+    <!-- Third line -->
+    <line x1="60" y1="100" x2="85" y2="100"/>
+    <circle cx="60" cy="100" r="3" fill="black"/>
+    <circle cx="85" cy="100" r="3" fill="black"/>
+    
+    <!-- Fourth line -->
+    <line x1="60" y1="120" x2="80" y2="120"/>
+    <circle cx="60" cy="120" r="3" fill="black"/>
+    <circle cx="80" cy="120" r="3" fill="black"/>
+    
+    <!-- Fifth line -->
+    <line x1="60" y1="140" x2="75" y2="140"/>
+    <circle cx="60" cy="140" r="3" fill="black"/>
+    <circle cx="75" cy="140" r="3" fill="black"/>
+    
+    <!-- Right side connections -->
+    <line x1="130" y1="60" x2="145" y2="60"/>
+    <circle cx="130" cy="60" r="3" fill="black"/>
+    <circle cx="145" cy="60" r="3" fill="black"/>
+    
+    <line x1="120" y1="80" x2="145" y2="80"/>
+    <circle cx="120" cy="80" r="3" fill="black"/>
+    <circle cx="145" cy="80" r="3" fill="black"/>
+    
+    <line x1="125" y1="100" x2="150" y2="100"/>
+    <circle cx="125" cy="100" r="3" fill="black"/>
+    <circle cx="150" cy="100" r="3" fill="black"/>
+    <circle cx="140" cy="100" r="4" fill="black"/>
+    
+    <line x1="130" y1="120" x2="145" y2="120"/>
+    <circle cx="130" cy="120" r="3" fill="black"/>
+    <circle cx="145" cy="120" r="3" fill="black"/>
+    
+    <!-- Diagonal connector -->
+    <line x1="95" y1="75" x2="130" y2="110"/>
+    <circle cx="95" cy="75" r="2" fill="black"/>
+  </g>
+</svg>
