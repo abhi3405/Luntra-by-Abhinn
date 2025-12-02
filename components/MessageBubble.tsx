@@ -1,6 +1,5 @@
 import React from 'react';
 import { Message, Role } from '../types';
-import { UserIcon } from './Icons';
 import MarkdownRenderer from './MarkdownRenderer';
 
 interface MessageBubbleProps {
@@ -12,43 +11,39 @@ const MessageBubble: React.FC<MessageBubbleProps> = ({ message, theme = 'dark' }
   const isUser = message.role === Role.USER;
 
   return (
-    <div className={`flex w-full ${isUser ? 'justify-end' : 'justify-start'} mb-4 group`}>
-      <div className={`flex max-w-[85%] gap-3 ${isUser ? 'flex-row-reverse' : 'flex-row'}`}>
+    <div className={`flex w-full ${isUser ? 'justify-end' : 'justify-start'} mb-4`}>
+      <div className={`flex max-w-2xl gap-3 ${isUser ? 'flex-row-reverse' : 'flex-row'}`}>
         
-        {/* Avatar */}
+        {/* Avatar - One UI Style */}
         <div className={`
-          flex-shrink-0 w-7 h-7 rounded-full flex items-center justify-center self-start mt-0.5 transition-colors
+          flex-shrink-0 w-8 h-8 rounded-full flex items-center justify-center self-start mt-1 text-xs font-semibold transition-all
           ${isUser 
-            ? 'bg-[#D0BCFF] text-[#381E72]' 
+            ? theme === 'light'
+              ? 'bg-gradient-to-br from-blue-400 to-cyan-400 text-white'
+              : 'bg-gradient-to-br from-blue-500 to-cyan-500 text-white'
             : theme === 'light'
-            ? 'bg-gray-200 text-gray-700'
-            : 'bg-[#2B2930] text-[#E6E0E9]'
+            ? 'bg-slate-200 text-slate-800'
+            : 'bg-slate-800 text-slate-200'
           }
         `}>
-          {isUser && <UserIcon size={16} />}
-          {!isUser && <span className="text-xs font-semibold">AI</span>}
+          {isUser ? 'U' : 'L'}
         </div>
 
-        {/* Content Bubble */}
+        {/* Content Bubble - One UI Style */}
         <div className={`
-            flex-1 min-w-0 flex flex-col
-            ${isUser ? 'items-end' : 'items-start'}
+            px-5 py-3.5 text-sm leading-relaxed rounded-3xl transition-all
+            ${isUser 
+              ? `${theme === 'light' ? 'bg-blue-500' : 'bg-blue-600'} text-white rounded-br-none` 
+              : theme === 'light'
+              ? 'bg-slate-100 text-slate-900 rounded-bl-none'
+              : 'bg-slate-900 text-white rounded-bl-none'
+            }
         `}>
-            <div className={`
-                px-4 py-2.5 text-sm leading-relaxed rounded-lg transition-colors
-                ${isUser 
-                  ? 'bg-[#D0BCFF] text-[#381E72]' 
-                  : theme === 'light'
-                  ? 'bg-gray-100 text-gray-900'
-                  : 'bg-[#2B2930] text-[#E6E0E9]'
-                }
-            `}>
-                {isUser ? (
-                    <div className="whitespace-pre-wrap">{message.content}</div>
-                ) : (
-                    <MarkdownRenderer content={message.content} />
-                )}
-            </div>
+            {isUser ? (
+                <div className="whitespace-pre-wrap">{message.content}</div>
+            ) : (
+                <MarkdownRenderer content={message.content} />
+            )}
         </div>
 
       </div>

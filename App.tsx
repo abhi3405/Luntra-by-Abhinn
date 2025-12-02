@@ -107,97 +107,118 @@ function App() {
   };
 
   return (
-    <div className={`flex h-screen overflow-hidden transition-colors duration-300 ${
+    <div className={`flex h-screen overflow-hidden transition-all duration-500 ${
       theme === 'light' 
-        ? 'bg-white text-gray-900' 
-        : 'bg-[#141218] text-[#E6E0E9]'
+        ? 'bg-white text-slate-900' 
+        : 'bg-black text-white'
     }`}>
       {/* Main Chat Area */}
       <div className="flex-1 flex flex-col h-full relative w-full">
         
-        {/* Top Header with Logo and New Chat button */}
-        <div className={`flex items-center justify-between px-4 py-4 z-10 sticky top-0 border-b transition-colors duration-300 ${
+        {/* Header - One UI Style */}
+        <div className={`flex items-center justify-between px-5 py-4 transition-all duration-300 backdrop-blur-lg ${
           theme === 'light'
-            ? 'bg-white border-gray-200'
-            : 'bg-[#141218] border-[#49454F]/20'
+            ? 'bg-white/95 border-b border-slate-100'
+            : 'bg-black/95 border-b border-slate-900'
         }`}>
             <div className="flex items-center gap-3">
-              <img src="/logo.svg" alt="Luntra" className={`h-8 w-8 ${theme === 'light' ? 'invert' : ''}`} />
-              <h1 className="text-xl font-semibold">Luntra</h1>
+              <div className={`p-2 rounded-full transition-all transform hover:scale-110 active:scale-95 ${
+                theme === 'light'
+                  ? 'bg-blue-100'
+                  : 'bg-slate-900'
+              }`}>
+                <div className={`h-6 w-6 flex items-center justify-center ${
+                  theme === 'light'
+                    ? 'text-blue-700'
+                    : 'text-blue-400'
+                }`}>
+                  <svg viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg" className="w-full h-full" fill="currentColor" stroke="currentColor">
+                    <path d="M 100 15 C 150 15 185 50 185 100 C 185 150 150 185 100 185 C 88 185 77 183 67 179 L 25 205 L 50 155 C 30 138 18 115 18 100 C 18 50 53 15 100 15 Z" 
+                          fill="none" strokeWidth="10" strokeLinejoin="round" strokeLinecap="round"/>
+                    <line x1="50" y1="55" x2="145" y2="55" strokeWidth="2" strokeLinecap="round"/>
+                    <line x1="50" y1="70" x2="145" y2="70" strokeWidth="2" strokeLinecap="round"/>
+                    <circle cx="65" cy="70" r="3.5" fill="currentColor"/>
+                  </svg>
+                </div>
+              </div>
+              <div>
+                <h1 className="text-lg font-semibold">Luntra</h1>
+                <p className={`text-xs ${theme === 'light' ? 'text-slate-500' : 'text-slate-400'}`}>AI Assistant</p>
+              </div>
             </div>
             <div className="flex gap-2">
               <button 
                 onClick={toggleTheme}
-                className={`p-2 rounded-lg transition-colors ${
+                className={`p-2.5 rounded-full transition-all transform hover:scale-110 active:scale-95 ${
                   theme === 'light'
-                    ? 'bg-gray-100 text-gray-700 hover:bg-gray-200'
-                    : 'bg-[#2B2930] text-[#E6E0E9] hover:bg-[#36343B]'
+                    ? 'bg-slate-100 text-slate-700'
+                    : 'bg-slate-900 text-slate-300'
                 }`}
               >
-                {theme === 'light' ? <MoonIcon size={20} /> : <SunIcon size={20} />}
+                {theme === 'light' ? <MoonIcon size={18} /> : <SunIcon size={18} />}
               </button>
               <button 
                 onClick={handleNewChat}
-                className="px-4 py-2 text-sm font-medium bg-[#D0BCFF] text-[#381E72] rounded-lg hover:bg-[#E8DEF8] transition-colors"
+                className={`px-4 py-2.5 text-sm font-semibold rounded-full transition-all transform hover:scale-105 active:scale-95 ${
+                  theme === 'light'
+                    ? 'bg-blue-500 text-white hover:bg-blue-600'
+                    : 'bg-blue-600 text-white hover:bg-blue-700'
+                }`}
               >
-                New Chat
+                New
               </button>
             </div>
         </div>
 
-        {/* Messages Container */}
-        <div className={`flex-1 overflow-y-auto custom-scrollbar scroll-smooth ${
-          theme === 'light' ? 'bg-white' : 'bg-[#141218]'
-        }`}>
+        {/* Messages Container - One UI */}
+        <div className={`flex-1 overflow-y-auto custom-scrollbar scroll-smooth transition-colors duration-300`}>
           {messages.length === 0 ? (
             <div className="h-full flex flex-col items-center justify-center p-6 text-center">
-              <h2 className="text-3xl md:text-4xl font-semibold mb-3">How can I help?</h2>
-              <p className={`text-base max-w-md mb-8 ${
-                theme === 'light' ? 'text-gray-600' : 'text-[#CAC4D0]'
+              <div className={`w-24 h-24 rounded-3xl mb-8 flex items-center justify-center transition-all transform hover:scale-110 ${
+                theme === 'light'
+                  ? 'bg-blue-100 shadow-lg'
+                  : 'bg-slate-900 shadow-xl shadow-blue-500/10'
+              }`}>
+                <div className={`h-14 w-14 flex items-center justify-center ${
+                  theme === 'light'
+                    ? 'text-blue-700'
+                    : 'text-blue-400'
+                }`}>
+                  <svg viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg" className="w-full h-full" fill="currentColor" stroke="currentColor">
+                    <path d="M 100 15 C 150 15 185 50 185 100 C 185 150 150 185 100 185 C 88 185 77 183 67 179 L 25 205 L 50 155 C 30 138 18 115 18 100 C 18 50 53 15 100 15 Z" 
+                          fill="none" strokeWidth="10" strokeLinejoin="round" strokeLinecap="round"/>
+                    <line x1="50" y1="55" x2="145" y2="55" strokeWidth="2" strokeLinecap="round"/>
+                  </svg>
+                </div>
+              </div>
+              <h2 className="text-5xl font-bold mb-4">How can I help?</h2>
+              <p className={`text-base max-w-md ${
+                theme === 'light' ? 'text-slate-500' : 'text-slate-400'
               }`}>
                 Ask me anything or start a new conversation.
               </p>
-              
-              {/* Suggestion Chips */}
-              <div className="flex flex-wrap justify-center gap-3 max-w-2xl">
-                 {['Summarize a text', 'Write python code', 'Design a logo concept'].map(text => (
-                    <button 
-                        key={text} 
-                        onClick={() => { setInputValue(text); if(textareaRef.current) textareaRef.current.focus(); }}
-                        className={`px-4 py-2.5 rounded-lg text-sm font-medium transition-colors ${
-                          theme === 'light'
-                            ? 'bg-gray-100 border border-gray-300 text-gray-900 hover:bg-gray-200'
-                            : 'bg-[#2B2930] hover:bg-[#36343B] border border-[#49454F] text-[#E6E0E9]'
-                        }`}
-                    >
-                        {text}
-                    </button>
-                 ))}
-              </div>
             </div>
           ) : (
-            <div className={`flex flex-col py-6 md:py-8 max-w-3xl mx-auto w-full px-4 md:px-0 ${
-              theme === 'light' ? 'bg-white' : 'bg-[#141218]'
-            }`}>
+            <div className="flex flex-col py-6 md:py-8 max-w-3xl mx-auto w-full px-4 md:px-0">
               {messages.map(msg => (
                 <MessageBubble key={msg.id} message={msg} theme={theme} />
               ))}
               {isTyping && messages[messages.length - 1]?.role === Role.USER && (
-                  <div className="flex w-full justify-start mb-4 animate-pulse">
-                      <div className="flex gap-3">
-                          <div className={`rounded-lg px-4 py-3 flex items-center space-x-1.5 ${
+                  <div className="flex w-full justify-start mb-4">
+                      <div className="flex gap-2">
+                          <div className={`rounded-2xl px-5 py-3 flex items-center space-x-1.5 ${
                             theme === 'light'
-                              ? 'bg-gray-100'
-                              : 'bg-[#2B2930]'
+                              ? 'bg-slate-100'
+                              : 'bg-slate-900'
                           }`}>
-                              <div className={`w-1.5 h-1.5 rounded-full animate-bounce ${
-                                theme === 'light' ? 'bg-gray-600' : 'bg-[#E6E0E9]'
+                              <div className={`w-2.5 h-2.5 rounded-full animate-bounce ${
+                                theme === 'light' ? 'bg-slate-600' : 'bg-slate-300'
                               }`} style={{ animationDelay: '0ms' }}></div>
-                              <div className={`w-1.5 h-1.5 rounded-full animate-bounce ${
-                                theme === 'light' ? 'bg-gray-600' : 'bg-[#E6E0E9]'
+                              <div className={`w-2.5 h-2.5 rounded-full animate-bounce ${
+                                theme === 'light' ? 'bg-slate-600' : 'bg-slate-300'
                               }`} style={{ animationDelay: '150ms' }}></div>
-                              <div className={`w-1.5 h-1.5 rounded-full animate-bounce ${
-                                theme === 'light' ? 'bg-gray-600' : 'bg-[#E6E0E9]'
+                              <div className={`w-2.5 h-2.5 rounded-full animate-bounce ${
+                                theme === 'light' ? 'bg-slate-600' : 'bg-slate-300'
                               }`} style={{ animationDelay: '300ms' }}></div>
                           </div>
                       </div>
@@ -208,14 +229,12 @@ function App() {
           )}
         </div>
 
-        {/* Input Area */}
-        <div className={`flex-shrink-0 p-4 pb-6 w-full transition-colors duration-300 ${
-          theme === 'light' ? 'bg-white' : 'bg-[#141218]'
-        }`}>
-          <div className={`max-w-3xl mx-auto relative rounded-lg transition-all duration-200 border ${
+        {/* Input Area - One UI Style */}
+        <div className={`flex-shrink-0 p-5 pb-7 w-full transition-all duration-300`}>
+          <div className={`max-w-3xl mx-auto relative rounded-3xl transition-all duration-200 ${
             theme === 'light'
-              ? 'bg-white border-gray-300 focus-within:border-blue-500'
-              : 'bg-[#2B2930] border-[#49454F] focus-within:bg-[#36343B]'
+              ? 'bg-slate-100 shadow-md'
+              : 'bg-slate-900 shadow-lg'
           }`}>
             <textarea
               ref={textareaRef}
@@ -224,27 +243,40 @@ function App() {
               onChange={(e) => setInputValue(e.target.value)}
               onKeyDown={handleKeyDown}
               placeholder="Type your message..."
-              className={`w-full rounded-lg pl-4 pr-14 py-3 focus:outline-none resize-none overflow-hidden max-h-[150px] text-sm leading-5 bg-transparent ${
+              className={`w-full rounded-3xl pl-6 pr-16 py-4 focus:outline-none resize-none overflow-hidden max-h-[150px] text-sm leading-6 bg-transparent ${
                 theme === 'light'
-                  ? 'text-gray-900 placeholder-gray-500'
-                  : 'text-[#E6E0E9] placeholder-[#79747E]'
+                  ? 'text-slate-900 placeholder-slate-400'
+                  : 'text-white placeholder-slate-500'
               }`}
             />
             <button
               onClick={handleSendMessage}
               disabled={!inputValue.trim() || isTyping}
               className={`
-                absolute right-2 bottom-2.5 w-8 h-8 rounded-md flex items-center justify-center transition-all duration-200
+                absolute right-2 bottom-2.5 w-10 h-10 rounded-full flex items-center justify-center transition-all transform hover:scale-110 active:scale-90
                 ${!inputValue.trim() || isTyping 
                   ? theme === 'light'
-                    ? 'bg-transparent text-gray-400 cursor-not-allowed'
-                    : 'bg-transparent text-[#79747E] cursor-not-allowed'
-                  : 'bg-[#D0BCFF] text-[#381E72] hover:bg-[#E8DEF8]'
+                    ? 'bg-slate-200 text-slate-400 cursor-not-allowed'
+                    : 'bg-slate-800 text-slate-600 cursor-not-allowed'
+                  : theme === 'light'
+                  ? 'bg-blue-500 text-white hover:bg-blue-600'
+                  : 'bg-blue-600 text-white hover:bg-blue-700'
                 }
               `}
             >
-              <SendIcon size={18} />
+              <SendIcon size={20} />
             </button>
+          </div>
+          
+          {/* Footer with designer credit */}
+          <div className="max-w-3xl mx-auto mt-4 text-center">
+            <p className={`text-xs font-medium tracking-wider transition-all opacity-60 hover:opacity-100 ${
+              theme === 'light' 
+                ? 'text-slate-500' 
+                : 'text-slate-400'
+            }`}>
+              Designed by Abhinn©
+            </p>
           </div>
         </div>
       </div>

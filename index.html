@@ -9,40 +9,39 @@
     <style>
       body {
         font-family: 'Roboto', sans-serif;
-        background-color: #141218; /* Material Surface */
-        color: #E6E0E9; /* On Surface */
+        background: #000000;
+        color: #ffffff;
         margin: 0;
         padding: 0;
       }
       html.light body {
-        background-color: #ffffff;
-        color: #1a1a1a;
+        background: #ffffff;
+        color: #000000;
       }
-      /* Custom scrollbar */
+      /* One UI Custom scrollbar */
       .custom-scrollbar::-webkit-scrollbar {
-        width: 6px;
+        width: 8px;
       }
       .custom-scrollbar::-webkit-scrollbar-track {
         background: transparent;
       }
       .custom-scrollbar::-webkit-scrollbar-thumb {
-        background-color: #49454F;
+        background: #1e40af;
         border-radius: 10px;
+        border: 2px solid transparent;
+        background-clip: padding-box;
       }
       .custom-scrollbar::-webkit-scrollbar-thumb:hover {
-        background-color: #79747E;
+        background: #2563eb;
+        background-clip: padding-box;
       }
       html.light .custom-scrollbar::-webkit-scrollbar-thumb {
-        background-color: #d0d0d0;
+        background: #cbd5e1;
+        background-clip: padding-box;
       }
       html.light .custom-scrollbar::-webkit-scrollbar-thumb:hover {
-        background-color: #a0a0a0;
-      }
-      
-      /* Fade in animation */
-      @keyframes fadeIn {
-        from { opacity: 0; transform: translateY(10px); }
-        to { opacity: 1; transform: translateY(0); }
+        background: #94a3b8;
+        background-clip: padding-box;
       }
     </style>
   <script type="importmap">
