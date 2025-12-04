@@ -632,14 +632,16 @@ function App() {
                     : 'bg-slate-800 border border-slate-700'
                 }`}>
                   <button onClick={() => {
-                    if (window.confirm('Clear all search history? This cannot be undone.')) {
+                    if (window.confirm('Clear all search history and conversations? This cannot be undone.')) {
                       setSearchHistory([]);
+                      setConversations([]);
+                      setCurrentConversationId(null);
                       setShowExportMenu(false);
                     }
                   }} className={`block w-full text-left px-3 py-2 rounded text-sm ${
                     theme === 'light' ? 'hover:bg-slate-100' : 'hover:bg-slate-700'
                   }`}>
-                    🧹 Clear History
+                    🧹 Clear History & Conversations
                   </button>
                   <button onClick={() => {
                     if (window.confirm('Delete all conversations? This cannot be undone.')) {
