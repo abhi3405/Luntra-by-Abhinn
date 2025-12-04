@@ -137,7 +137,10 @@ function App() {
       };
 
       setMessages(prev => [...prev, botMessage]);
-      const stream = geminiService.sendMessageStream(userMessage.content);
+      
+      // Detect language and send with language instruction
+      const languagePrompt = detectAndPrependLanguage(userMessage.content);
+      const stream = geminiService.sendMessageStream(languagePrompt);
 
       let fullContent = '';
 
@@ -176,6 +179,33 @@ function App() {
     setInputValue('');
     setIsTyping(false);
     setCurrentConversationId(null);
+  };
+
+  // Language detection and support
+  const detectAndPrependLanguage = (text: string): string => {
+    // Detect common language patterns
+    const languageMap: { [key: string]: { name: string; regex: RegExp } } = {
+      spanish: { name: 'Spanish', regex: /[ñáéíóúüàâäãåèêëìîïòôöõøùûüýÿßœæ]/u },
+      french: { name: 'French', regex: /[àâäãåèêëìîïòôöõøùûüýÿ]/u },
+      german: { name: 'German', regex: /[äöüßÄÖÜ]/u },
+      portuguese: { name: 'Portuguese', regex: /[ãõáéíóúâêô]/u },
+      italian: { name: 'Italian', regex: /[àèéìòù]/u },
+      japanese: { name: 'Japanese', regex: /[\u3040-\u309F\u30A0-\u30FF\u4E00-\u9FFF]/u },
+      chinese: { name: 'Chinese', regex: /[\u4E00-\u9FFF]/u },
+      arabic: { name: 'Arabic', regex: /[\u0600-\u06FF]/u },
+      hindi: { name: 'Hindi', regex: /[\u0900-\u097F]/u },
+      korean: { name: 'Korean', regex: /[\uAC00-\uD7AF]/u },
+      russian: { name: 'Russian', regex: /[а-яёА-ЯЁ]/u },
+    };
+
+    for (const [lang, { name, regex }] of Object.entries(languageMap)) {
+      if (regex.test(text)) {
+        return `Please respond in ${name} language. User message: ${text}`;
+      }
+    }
+
+    // Default to English
+    return text;
   };
 
   const saveConversation = () => {
@@ -552,7 +582,7 @@ function App() {
               📥
             </button>
             {showExportMenu && (
-              <div className={`absolute top-16 right-8 rounded-xl shadow-xl p-2 z-40 ${
+              <div className={`absolute top-16 right-24 rounded-xl shadow-xl p-2 z-40 ${
                 theme === 'light' ? 'bg-white border border-slate-200' : 'bg-slate-800 border border-slate-700'
               }`}>
                 <button onClick={() => exportChat('txt')} className={`block w-full text-left px-3 py-2 rounded text-sm ${theme === 'light' ? 'hover:bg-slate-100' : 'hover:bg-slate-700'}`}>📄 Text</button>
@@ -570,6 +600,22 @@ function App() {
                 : 'bg-slate-800 hover:bg-slate-700'
             }`} title="Save">
               💾
+            </button>
+            <button onClick={messages.length > 0 ? () => {
+              if (window.confirm('Are you sure you want to clear all messages? This action cannot be undone.')) {
+                setMessages([]);
+                handleNewChat();
+              }
+            } : undefined} disabled={messages.length === 0} className={`p-2 rounded-lg transition-all ${
+              messages.length === 0
+                ? theme === 'light'
+                  ? 'bg-slate-100 text-slate-400 cursor-not-allowed'
+                  : 'bg-slate-800 text-slate-600 cursor-not-allowed'
+                : theme === 'light'
+                ? 'bg-red-100 text-red-600 hover:bg-red-200'
+                : 'bg-red-900/30 text-red-400 hover:bg-red-900/50'
+            }`} title="Clear Chat">
+              🗑️
             </button>
           </div>
         </div>
