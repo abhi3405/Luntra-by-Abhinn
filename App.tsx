@@ -459,12 +459,12 @@ function App() {
           : 'bg-slate-900/50 border-r border-slate-800 backdrop-blur-xl'
       }`}>
         {/* Logo & New Chat */}
-        <div className={`p-6 border-b ${theme === 'light' ? 'border-slate-200' : 'border-slate-800'}`}>
-          <h1 className="text-3xl font-black bg-gradient-to-r from-blue-500 to-purple-600 bg-clip-text text-transparent mb-4">Luntra</h1>
-          <button onClick={handleNewChat} className={`w-full px-4 py-2.5 rounded-xl font-semibold transition-all transform hover:scale-105 active:scale-95 flex items-center justify-center gap-2 ${
+        <div className={`p-6 border-b transition-colors ${theme === 'light' ? 'border-slate-200' : 'border-slate-800'}`}>
+          <h1 className="text-3xl font-black bg-gradient-to-r from-blue-500 via-purple-500 to-pink-500 bg-clip-text text-transparent mb-4 hover:drop-shadow-lg transition-all">Luntra</h1>
+          <button onClick={handleNewChat} className={`w-full px-4 py-2.5 rounded-xl font-semibold transition-all transform hover:scale-110 active:scale-95 flex items-center justify-center gap-2 shadow-lg hover:shadow-2xl ${
             theme === 'light'
-              ? 'bg-gradient-to-r from-blue-500 to-blue-600 text-white hover:shadow-lg'
-              : 'bg-gradient-to-r from-blue-600 to-blue-700 text-white hover:shadow-lg hover:shadow-blue-500/20'
+              ? 'bg-gradient-to-r from-blue-500 to-blue-600 text-white hover:shadow-blue-500/50'
+              : 'bg-gradient-to-r from-blue-600 to-blue-700 text-white hover:shadow-blue-500/40 animate-pulse-glow'
           }`}>
             <PlusIcon size={18} />
             New Chat
@@ -480,14 +480,14 @@ function App() {
               }`}>Conversations</h3>
               {conversations.slice(0, 10).map((conv) => (
                 <div key={conv.id} className="group relative">
-                  <button onClick={() => setCurrentConversationId(conv.id)} className={`w-full text-left px-3 py-2.5 rounded-xl transition-all ${
+                  <button onClick={() => setCurrentConversationId(conv.id)} className={`w-full text-left px-3 py-2.5 rounded-xl transition-all transform hover:scale-105 active:scale-95 ${
                     currentConversationId === conv.id
                       ? theme === 'light'
-                        ? 'bg-blue-100 text-blue-900'
-                        : 'bg-blue-900/30 text-blue-300'
+                        ? 'bg-blue-100 text-blue-900 shadow-lg shadow-blue-500/30'
+                        : 'bg-blue-900/30 text-blue-300 shadow-lg shadow-blue-500/20 border border-blue-500/50'
                       : theme === 'light'
-                      ? 'text-slate-700 hover:bg-slate-100'
-                      : 'text-slate-300 hover:bg-slate-800/50'
+                      ? 'text-slate-700 hover:bg-slate-100 hover:shadow-md'
+                      : 'text-slate-300 hover:bg-slate-800/50 hover:shadow-md hover:shadow-slate-700/30'
                   }`}>
                     <p className="font-medium truncate text-sm">{conv.title}</p>
                     <p className="text-xs opacity-60 truncate">{conv.preview}</p>
@@ -496,10 +496,10 @@ function App() {
                     if (window.confirm(`Delete "${conv.title}"? This cannot be undone.`)) {
                       deleteConversation(conv.id);
                     }
-                  }} className={`absolute right-2 top-1/2 -translate-y-1/2 p-1.5 rounded opacity-0 group-hover:opacity-100 transition-opacity ${
+                  }} className={`absolute right-2 top-1/2 -translate-y-1/2 p-1.5 rounded opacity-0 group-hover:opacity-100 transition-all transform hover:scale-110 ${
                     theme === 'light'
-                      ? 'bg-red-100 text-red-600 hover:bg-red-200'
-                      : 'bg-red-900/30 text-red-400 hover:bg-red-900/50'
+                      ? 'bg-red-100 text-red-600 hover:bg-red-200 shadow-md'
+                      : 'bg-red-900/30 text-red-400 hover:bg-red-900/50 shadow-md shadow-red-900/30'
                   }`} title="Delete conversation">
                     🗑️
                   </button>
@@ -514,10 +514,10 @@ function App() {
               }`}>History</h3>
               {searchHistory.slice(0, 5).map((item, idx) => (
                 <div key={idx} className="group relative">
-                  <button onClick={() => setInputValue(item)} className={`w-full text-left px-3 py-2 rounded-lg text-sm transition-all truncate ${
+                  <button onClick={() => setInputValue(item)} className={`w-full text-left px-3 py-2 rounded-lg text-sm transition-all transform hover:scale-105 truncate ${
                     theme === 'light'
-                      ? 'text-slate-700 hover:bg-slate-100'
-                      : 'text-slate-400 hover:bg-slate-800/50'
+                      ? 'text-slate-700 hover:bg-slate-100 hover:shadow-md'
+                      : 'text-slate-400 hover:bg-slate-800/50 hover:shadow-md hover:shadow-slate-700/30'
                   }`} title={item}>
                     {item}
                   </button>
@@ -525,10 +525,10 @@ function App() {
                     if (window.confirm(`Delete this search? This cannot be undone.`)) {
                       setSearchHistory(prev => prev.filter((_, i) => i !== idx));
                     }
-                  }} className={`absolute right-2 top-1/2 -translate-y-1/2 p-1.5 rounded opacity-0 group-hover:opacity-100 transition-opacity ${
+                  }} className={`absolute right-2 top-1/2 -translate-y-1/2 p-1.5 rounded opacity-0 group-hover:opacity-100 transition-all transform hover:scale-110 ${
                     theme === 'light'
-                      ? 'bg-red-100 text-red-600 hover:bg-red-200'
-                      : 'bg-red-900/30 text-red-400 hover:bg-red-900/50'
+                      ? 'bg-red-100 text-red-600 hover:bg-red-200 shadow-md'
+                      : 'bg-red-900/30 text-red-400 hover:bg-red-900/50 shadow-md shadow-red-900/30'
                   }`} title="Delete search history">
                     🗑️
                   </button>
@@ -689,16 +689,16 @@ function App() {
         {/* Messages */}
         <div className="flex-1 overflow-y-auto">
           {messages.length === 0 ? (
-            <div className="h-full flex flex-col items-center justify-center p-6 text-center">
-              <div className={`w-24 h-24 rounded-3xl mb-8 flex items-center justify-center bg-gradient-to-br ${
+            <div className="h-full flex flex-col items-center justify-center p-6 text-center animate-slideUp">
+              <div className={`w-24 h-24 rounded-3xl mb-8 flex items-center justify-center bg-gradient-to-br animate-float ${
                 theme === 'light'
-                  ? 'from-blue-100 to-blue-50'
-                  : 'from-blue-900/30 to-purple-900/30'
+                  ? 'from-blue-100 to-blue-50 shadow-lg shadow-blue-500/30'
+                  : 'from-blue-900/40 to-purple-900/40 shadow-lg shadow-blue-500/20'
               }`}>
-                <span className="text-5xl">🚀</span>
+                <span className="text-5xl hover:scale-110 transition-transform">🚀</span>
               </div>
-              <h2 className="text-4xl font-bold mb-2">How can I help?</h2>
-              <p className={`text-base max-w-md ${
+              <h2 className="text-4xl font-bold mb-2 bg-gradient-to-r from-blue-500 via-purple-500 to-pink-500 bg-clip-text text-transparent">How can I help?</h2>
+              <p className={`text-base max-w-md transition-colors ${
                 theme === 'light' ? 'text-slate-600' : 'text-slate-400'
               }`}>
                 Start a conversation or use a prompt template to get started.
@@ -735,16 +735,16 @@ function App() {
         </div>
 
         {/* Input */}
-        <div className={`p-6 border-t backdrop-blur-xl ${
+        <div className={`p-6 border-t backdrop-blur-xl transition-all ${
           theme === 'light'
-            ? 'bg-white/80 border-slate-200'
-            : 'bg-slate-900/50 border-slate-800'
+            ? 'bg-white/90 border-slate-200'
+            : 'bg-slate-900/70 border-slate-800'
         }`}>
           <div className="max-w-4xl mx-auto">
             <div className={`relative rounded-2xl transition-all ${
               theme === 'light'
-                ? 'bg-slate-100'
-                : 'bg-slate-800/50'
+                ? 'bg-slate-100 border border-slate-200 focus-within:border-blue-400 focus-within:shadow-lg focus-within:shadow-blue-500/20'
+                : 'bg-slate-800/70 border border-slate-700 focus-within:border-blue-500 focus-within:shadow-lg focus-within:shadow-blue-500/30'
             }`}>
               <textarea
                 ref={textareaRef}
@@ -752,24 +752,25 @@ function App() {
                 value={inputValue}
                 onChange={(e) => setInputValue(e.target.value)}
                 onKeyDown={handleKeyDown}
-                placeholder="Ask me anything..."
-                className={`w-full rounded-2xl px-6 py-4 resize-none overflow-hidden max-h-[120px] text-sm bg-transparent focus:outline-none ${
+                placeholder="Ask me anything... ✨"
+                className={`w-full rounded-2xl px-6 py-4 resize-none overflow-hidden max-h-[120px] text-sm bg-transparent focus:outline-none transition-colors ${
                   theme === 'light'
                     ? 'text-slate-900 placeholder-slate-500'
-                    : 'text-white placeholder-slate-500'
+                    : 'text-white placeholder-slate-400'
                 }`}
+
               />
               <button
                 onClick={handleSendMessage}
                 disabled={!inputValue.trim() || isTyping}
-                className={`absolute right-3 bottom-3 w-10 h-10 rounded-full flex items-center justify-center transition-all ${
+                className={`absolute right-3 bottom-3 w-10 h-10 rounded-full flex items-center justify-center transition-all transform hover:scale-110 active:scale-95 ${
                   !inputValue.trim() || isTyping
                     ? theme === 'light'
-                      ? 'bg-slate-200 text-slate-400'
-                      : 'bg-slate-700 text-slate-600'
+                      ? 'bg-slate-200 text-slate-400 cursor-not-allowed'
+                      : 'bg-slate-700 text-slate-600 cursor-not-allowed'
                     : theme === 'light'
-                    ? 'bg-gradient-to-r from-blue-500 to-blue-600 text-white hover:shadow-lg'
-                    : 'bg-gradient-to-r from-blue-600 to-blue-700 text-white hover:shadow-lg hover:shadow-blue-500/20'
+                    ? 'bg-gradient-to-r from-blue-500 to-blue-600 text-white hover:shadow-lg hover:shadow-blue-500/50 animate-pulse-glow'
+                    : 'bg-gradient-to-r from-blue-600 to-blue-700 text-white hover:shadow-lg hover:shadow-blue-500/50 animate-pulse-glow'
                 }`}
               >
                 <SendIcon size={18} />

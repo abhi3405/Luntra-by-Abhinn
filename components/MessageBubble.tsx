@@ -34,19 +34,19 @@ const MessageBubble: React.FC<MessageBubbleProps> = ({
   };
 
   return (
-    <div className={`flex w-full ${isUser ? 'justify-end' : 'justify-start'} mb-6 animate-fadeIn`}>
+    <div className={`flex w-full ${isUser ? 'justify-end' : 'justify-start'} mb-6 animate-slideUp`}>
       <div className={`flex max-w-2xl gap-3 ${isUser ? 'flex-row-reverse' : 'flex-row'} w-full`}>
         
         {/* Avatar */}
         <div className={`
-          flex-shrink-0 w-8 h-8 rounded-full flex items-center justify-center self-start mt-1 text-xs font-bold transition-all
+          flex-shrink-0 w-8 h-8 rounded-full flex items-center justify-center self-start mt-1 text-xs font-bold transition-all transform ${showActions ? 'scale-110' : 'scale-100'}
           ${isUser 
             ? theme === 'light'
-              ? 'bg-gradient-to-br from-blue-400 to-blue-600 text-white'
-              : 'bg-gradient-to-br from-green-400 to-blue-500 text-white'
+              ? 'bg-gradient-to-br from-blue-400 to-blue-600 text-white shadow-lg shadow-blue-500/50'
+              : 'bg-gradient-to-br from-green-400 to-blue-500 text-white shadow-lg shadow-blue-500/30'
             : theme === 'light'
-            ? 'bg-gradient-to-br from-purple-400 to-pink-400 text-white'
-            : 'bg-gradient-to-br from-purple-500 to-pink-500 text-white'
+            ? 'bg-gradient-to-br from-purple-400 to-pink-400 text-white shadow-lg shadow-purple-500/50'
+            : 'bg-gradient-to-br from-purple-500 to-pink-500 text-white shadow-lg shadow-purple-500/30'
           }
         `}>
           {isUser ? '👤' : '🤖'}
@@ -58,12 +58,12 @@ const MessageBubble: React.FC<MessageBubbleProps> = ({
           {/* Content Bubble */}
           <div
             className={`
-              group relative px-5 py-4 text-sm leading-relaxed rounded-2xl transition-all transform hover:scale-[1.01]
+              group relative px-5 py-4 text-sm leading-relaxed rounded-2xl transition-all transform hover:scale-[1.02] cursor-pointer
               ${isUser 
-                ? `${theme === 'light' ? 'bg-gradient-to-br from-blue-500 to-blue-600' : 'bg-gradient-to-br from-blue-600 to-blue-700'} text-white rounded-br-none shadow-md` 
+                ? `${theme === 'light' ? 'bg-gradient-to-br from-blue-500 to-blue-600' : 'bg-gradient-to-br from-blue-600 to-blue-700'} text-white rounded-br-none shadow-lg hover:shadow-blue-500/40 hover:shadow-2xl` 
                 : theme === 'light'
-                ? 'bg-slate-100 text-slate-900 rounded-bl-none max-w-xs md:max-w-2xl'
-                : 'bg-slate-800/50 text-slate-100 rounded-bl-none backdrop-blur-sm border border-slate-700/30 max-w-xs md:max-w-2xl'
+                ? 'bg-slate-100 text-slate-900 rounded-bl-none max-w-xs md:max-w-2xl hover:bg-slate-200 shadow-md'
+                : 'bg-slate-800/70 text-slate-100 rounded-bl-none backdrop-blur-md border border-slate-700/50 max-w-xs md:max-w-2xl hover:bg-slate-800 shadow-lg hover:shadow-slate-900/50'
               }
             `}
             onMouseEnter={() => !isUser && setShowActions(true)}
@@ -78,22 +78,22 @@ const MessageBubble: React.FC<MessageBubbleProps> = ({
             {/* Streaming indicator */}
             {message.isStreaming && (
               <div className="flex gap-1 mt-3">
-                <div className={`w-2 h-2 rounded-full animate-pulse ${theme === 'light' ? 'bg-slate-700' : 'bg-slate-300'}`}></div>
-                <div className={`w-2 h-2 rounded-full animate-pulse ${theme === 'light' ? 'bg-slate-700' : 'bg-slate-300'}`} style={{animationDelay: '0.1s'}}></div>
-                <div className={`w-2 h-2 rounded-full animate-pulse ${theme === 'light' ? 'bg-slate-700' : 'bg-slate-300'}`} style={{animationDelay: '0.2s'}}></div>
+                <div className={`w-2 h-2 rounded-full animate-bounce ${theme === 'light' ? 'bg-slate-700' : 'bg-slate-300'}`}></div>
+                <div className={`w-2 h-2 rounded-full animate-bounce ${theme === 'light' ? 'bg-slate-700' : 'bg-slate-300'}`} style={{animationDelay: '0.1s'}}></div>
+                <div className={`w-2 h-2 rounded-full animate-bounce ${theme === 'light' ? 'bg-slate-700' : 'bg-slate-300'}`} style={{animationDelay: '0.2s'}}></div>
               </div>
             )}
           </div>
 
           {/* Action Buttons */}
           {!isUser && showActions && (
-            <div className="flex gap-2 px-2 opacity-100 transition-opacity">
+            <div className="flex gap-2 px-2 opacity-100 transition-all animate-slideUp">
               <button
                 onClick={handleCopy}
-                className={`p-2 rounded-lg transition-all hover:scale-110 ${
+                className={`p-2 rounded-lg transition-all hover:scale-125 transform ${
                   theme === 'light'
-                    ? 'bg-slate-200 text-slate-700 hover:bg-slate-300'
-                    : 'bg-slate-700 text-slate-300 hover:bg-slate-600'
+                    ? 'bg-slate-200 text-slate-700 hover:bg-slate-300 hover:shadow-lg'
+                    : 'bg-slate-700 text-slate-300 hover:bg-slate-600 hover:shadow-lg hover:shadow-slate-600/50'
                 }`}
                 title="Copy"
               >
