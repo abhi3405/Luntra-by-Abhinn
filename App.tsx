@@ -617,6 +617,44 @@ function App() {
             }`} title="Clear Chat">
               🗑️
             </button>
+            <div className="relative">
+              <button onClick={() => setShowExportMenu(!showExportMenu)} className={`p-2 rounded-lg transition-all ${
+                theme === 'light'
+                  ? 'bg-slate-100 hover:bg-slate-200'
+                  : 'bg-slate-800 hover:bg-slate-700'
+              }`} title="More Options">
+                ⋮
+              </button>
+              {showExportMenu && (
+                <div className={`absolute right-0 mt-2 w-48 rounded-lg shadow-lg z-10 ${
+                  theme === 'light'
+                    ? 'bg-white border border-slate-200'
+                    : 'bg-slate-800 border border-slate-700'
+                }`}>
+                  <button onClick={() => {
+                    if (window.confirm('Clear all search history? This cannot be undone.')) {
+                      setSearchHistory([]);
+                      setShowExportMenu(false);
+                    }
+                  }} className={`block w-full text-left px-3 py-2 rounded text-sm ${
+                    theme === 'light' ? 'hover:bg-slate-100' : 'hover:bg-slate-700'
+                  }`}>
+                    🧹 Clear History
+                  </button>
+                  <button onClick={() => {
+                    if (window.confirm('Delete all conversations? This cannot be undone.')) {
+                      setConversations([]);
+                      setCurrentConversationId(null);
+                      setShowExportMenu(false);
+                    }
+                  }} className={`block w-full text-left px-3 py-2 rounded text-sm ${
+                    theme === 'light' ? 'hover:bg-slate-100' : 'hover:bg-slate-700'
+                  }`}>
+                    🗑️ Delete All Chats
+                  </button>
+                </div>
+              )}
+            </div>
           </div>
         </div>
 
@@ -641,7 +679,16 @@ function App() {
           ) : (
             <div className="max-w-4xl mx-auto p-6 space-y-4">
               {messages.map(msg => (
-                <MessageBubble key={msg.id} message={msg} theme={theme} />
+                <MessageBubble 
+                  key={msg.id} 
+                  message={msg} 
+                  theme={theme}
+                  onDelete={(id) => {
+                    if (window.confirm('Delete this message?')) {
+                      setMessages(prev => prev.filter(m => m.id !== id));
+                    }
+                  }}
+                />
               ))}
               {isTyping && (
                 <div className="flex justify-start">
