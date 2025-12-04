@@ -479,18 +479,31 @@ function App() {
                 theme === 'light' ? 'text-slate-500' : 'text-slate-400'
               }`}>Conversations</h3>
               {conversations.slice(0, 10).map((conv) => (
-                <button key={conv.id} onClick={() => setCurrentConversationId(conv.id)} className={`w-full text-left px-3 py-2.5 rounded-xl transition-all group ${
-                  currentConversationId === conv.id
-                    ? theme === 'light'
-                      ? 'bg-blue-100 text-blue-900'
-                      : 'bg-blue-900/30 text-blue-300'
-                    : theme === 'light'
-                    ? 'text-slate-700 hover:bg-slate-100'
-                    : 'text-slate-300 hover:bg-slate-800/50'
-                }`}>
-                  <p className="font-medium truncate text-sm">{conv.title}</p>
-                  <p className="text-xs opacity-60 truncate">{conv.preview}</p>
-                </button>
+                <div key={conv.id} className="group relative">
+                  <button onClick={() => setCurrentConversationId(conv.id)} className={`w-full text-left px-3 py-2.5 rounded-xl transition-all ${
+                    currentConversationId === conv.id
+                      ? theme === 'light'
+                        ? 'bg-blue-100 text-blue-900'
+                        : 'bg-blue-900/30 text-blue-300'
+                      : theme === 'light'
+                      ? 'text-slate-700 hover:bg-slate-100'
+                      : 'text-slate-300 hover:bg-slate-800/50'
+                  }`}>
+                    <p className="font-medium truncate text-sm">{conv.title}</p>
+                    <p className="text-xs opacity-60 truncate">{conv.preview}</p>
+                  </button>
+                  <button onClick={() => {
+                    if (window.confirm(`Delete "${conv.title}"? This cannot be undone.`)) {
+                      deleteConversation(conv.id);
+                    }
+                  }} className={`absolute right-2 top-1/2 -translate-y-1/2 p-1.5 rounded opacity-0 group-hover:opacity-100 transition-opacity ${
+                    theme === 'light'
+                      ? 'bg-red-100 text-red-600 hover:bg-red-200'
+                      : 'bg-red-900/30 text-red-400 hover:bg-red-900/50'
+                  }`} title="Delete conversation">
+                    🗑️
+                  </button>
+                </div>
               ))}
             </>
           )}
@@ -500,13 +513,26 @@ function App() {
                 theme === 'light' ? 'text-slate-500' : 'text-slate-400'
               }`}>History</h3>
               {searchHistory.slice(0, 5).map((item, idx) => (
-                <button key={idx} onClick={() => setInputValue(item)} className={`w-full text-left px-3 py-2 rounded-lg text-sm transition-all truncate ${
-                  theme === 'light'
-                    ? 'text-slate-700 hover:bg-slate-100'
-                    : 'text-slate-400 hover:bg-slate-800/50'
-                }`} title={item}>
-                  {item}
-                </button>
+                <div key={idx} className="group relative">
+                  <button onClick={() => setInputValue(item)} className={`w-full text-left px-3 py-2 rounded-lg text-sm transition-all truncate ${
+                    theme === 'light'
+                      ? 'text-slate-700 hover:bg-slate-100'
+                      : 'text-slate-400 hover:bg-slate-800/50'
+                  }`} title={item}>
+                    {item}
+                  </button>
+                  <button onClick={() => {
+                    if (window.confirm(`Delete this search? This cannot be undone.`)) {
+                      setSearchHistory(prev => prev.filter((_, i) => i !== idx));
+                    }
+                  }} className={`absolute right-2 top-1/2 -translate-y-1/2 p-1.5 rounded opacity-0 group-hover:opacity-100 transition-opacity ${
+                    theme === 'light'
+                      ? 'bg-red-100 text-red-600 hover:bg-red-200'
+                      : 'bg-red-900/30 text-red-400 hover:bg-red-900/50'
+                  }`} title="Delete search history">
+                    🗑️
+                  </button>
+                </div>
               ))}
             </>
           )}
