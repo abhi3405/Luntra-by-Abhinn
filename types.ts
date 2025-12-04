@@ -12,6 +12,8 @@ export interface Message {
   bookmarked?: boolean;
   edited?: boolean;
   reactions?: string[];
+  images?: string[]; // URLs of generated images
+  imagePrompt?: string; // Original prompt for image generation
 }
 
 export interface ChatSessionState {

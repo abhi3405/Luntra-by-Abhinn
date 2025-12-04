@@ -1,8 +1,9 @@
 import React, { useState, useRef, useEffect } from 'react';
 import { Message, Role, ModelConfig } from './types';
 import * as geminiService from './services/geminiService';
+import * as imageService from './services/imageService';
 import MessageBubble from './components/MessageBubble';
-import { SendIcon, MoonIcon, SunIcon, PlusIcon, HistoryIcon, SettingsIcon, ModelIcon } from './components/Icons';
+import { SendIcon, MoonIcon, SunIcon, PlusIcon, HistoryIcon, SettingsIcon, ModelIcon, ImageIcon } from './components/Icons';
 import { useTheme } from './context/ThemeContext';
 
 interface PromptTemplate {
@@ -19,7 +20,9 @@ function App() {
   const [inputValue, setInputValue] = useState('');
   const [isTyping, setIsTyping] = useState(false);
   const [sidebarOpen, setSidebarOpen] = useState(true);
-  const [showModal, setShowModal] = useState<'preferences' | 'about' | 'models' | 'templates' | null>(null);
+  const [showModal, setShowModal] = useState<'preferences' | 'about' | 'models' | 'templates' | 'imageGen' | null>(null);
+  const [imagePrompt, setImagePrompt] = useState('');
+  const [isGeneratingImage, setIsGeneratingImage] = useState(false);
   
   // Model Selection
   const [selectedModel, setSelectedModel] = useState<string>('gemini-pro');
@@ -262,6 +265,47 @@ function App() {
     setShowExportMenu(false);
   };
 
+  const handleGenerateImage = async () => {
+    if (!imagePrompt.trim()) {
+      alert('Please enter a prompt to generate an image');
+      return;
+    }
+
+    setIsGeneratingImage(true);
+    try {
+      const generatedImage = await imageService.generateImage(imagePrompt);
+      
+      const userMessage: Message = {
+        id: Date.now().toString(),
+        role: Role.USER,
+        content: `Generate an image: ${imagePrompt}`,
+        timestamp: Date.now(),
+        imagePrompt: imagePrompt
+      };
+
+      const aiMessage: Message = {
+        id: (Date.now() + 1).toString(),
+        role: Role.MODEL,
+        content: `I've generated an image based on your prompt: "${imagePrompt}"`,
+        timestamp: Date.now() + 1,
+        images: [generatedImage.url],
+        imagePrompt: imagePrompt
+      };
+
+      setMessages(prev => [...prev, userMessage, aiMessage]);
+      setImagePrompt('');
+      setShowModal(null);
+      
+      // Add to search history
+      setSearchHistory(prev => [imagePrompt, ...prev.slice(0, 49)]);
+    } catch (error) {
+      console.error('Error generating image:', error);
+      alert('Failed to generate image. Please try again.');
+    } finally {
+      setIsGeneratingImage(false);
+    }
+  };
+
   // Modal Components
   const PreferencesModal = () => (
     <div className="fixed inset-0 bg-black/60 flex items-center justify-center z-50 p-4 backdrop-blur-sm">
@@ -440,6 +484,78 @@ function App() {
             <p>© 2025 Abhinn. Licensed under MIT License.</p>
             <p className="text-xs opacity-75 mt-2">Luntra is provided "AS IS" without warranties. Use at your own risk.</p>
           </section>
+        </div>
+      </div>
+    </div>
+  );
+
+  const ImageGenModal = () => (
+    <div className="fixed inset-0 bg-black/60 flex items-center justify-center z-50 p-4 backdrop-blur-sm">
+      <div className={`rounded-3xl shadow-2xl max-w-2xl w-full max-h-[90vh] overflow-y-auto ${
+        theme === 'light' ? 'bg-white text-slate-900' : 'bg-slate-900/95 text-white border border-slate-800'
+      }`}>
+        <div className={`sticky top-0 flex items-center justify-between p-6 border-b ${
+          theme === 'light' ? 'border-slate-200 bg-slate-50' : 'border-slate-800 bg-slate-800/50'
+        }`}>
+          <h2 className="text-2xl font-bold flex items-center gap-2">🖼️ Generate Image</h2>
+          <button onClick={() => setShowModal(null)} className="text-2xl hover:scale-110 transition-transform">×</button>
+        </div>
+
+        <div className="p-6 space-y-4">
+          <div>
+            <label className="block text-sm font-semibold mb-2">Image Prompt</label>
+            <textarea
+              value={imagePrompt}
+              onChange={(e) => setImagePrompt(e.target.value)}
+              placeholder="Describe the image you want to generate... (e.g., 'A beautiful sunset over mountains with golden clouds')"
+              rows={6}
+              className={`w-full rounded-xl p-4 resize-none focus:outline-none transition-all ${
+                theme === 'light'
+                  ? 'bg-slate-100 border border-slate-200 focus:border-blue-400 focus:ring-2 focus:ring-blue-100'
+                  : 'bg-slate-800/50 border border-slate-700 focus:border-blue-500 focus:ring-2 focus:ring-blue-500/30'
+              }`}
+            />
+            <p className={`text-xs mt-2 ${theme === 'light' ? 'text-slate-500' : 'text-slate-400'}`}>
+              Be descriptive! Include details like style, mood, lighting, colors, and composition.
+            </p>
+          </div>
+
+          <div className="grid grid-cols-2 gap-3">
+            <button
+              onClick={() => setShowModal(null)}
+              className={`py-2.5 rounded-xl font-semibold transition-all ${
+                theme === 'light'
+                  ? 'bg-slate-100 text-slate-700 hover:bg-slate-200'
+                  : 'bg-slate-800/50 text-slate-300 hover:bg-slate-800'
+              }`}
+            >
+              Cancel
+            </button>
+            <button
+              onClick={handleGenerateImage}
+              disabled={isGeneratingImage || !imagePrompt.trim()}
+              className={`py-2.5 rounded-xl font-semibold transition-all flex items-center justify-center gap-2 ${
+                isGeneratingImage || !imagePrompt.trim()
+                  ? theme === 'light'
+                    ? 'bg-slate-200 text-slate-400 cursor-not-allowed'
+                    : 'bg-slate-700 text-slate-600 cursor-not-allowed'
+                  : theme === 'light'
+                  ? 'bg-gradient-to-r from-blue-500 to-blue-600 text-white hover:shadow-lg'
+                  : 'bg-gradient-to-r from-blue-600 to-blue-700 text-white hover:shadow-lg hover:shadow-blue-500/30'
+              }`}
+            >
+              {isGeneratingImage ? (
+                <>
+                  <div className="w-4 h-4 border-2 border-current border-t-transparent rounded-full animate-spin" />
+                  Generating...
+                </>
+              ) : (
+                <>
+                  ✨ Generate Image
+                </>
+              )}
+            </button>
+          </div>
         </div>
       </div>
     </div>
@@ -761,6 +877,17 @@ function App() {
 
               />
               <button
+                onClick={() => setShowModal('imageGen')}
+                className={`absolute left-3 bottom-3 w-10 h-10 rounded-full flex items-center justify-center transition-all transform hover:scale-110 active:scale-95 ${
+                  theme === 'light'
+                    ? 'bg-slate-200 text-slate-700 hover:bg-slate-300 hover:shadow-lg'
+                    : 'bg-slate-700 text-slate-300 hover:bg-slate-600 hover:shadow-lg hover:shadow-slate-600/50'
+                }`}
+                title="Generate Image"
+              >
+                <ImageIcon size={18} />
+              </button>
+              <button
                 onClick={handleSendMessage}
                 disabled={!inputValue.trim() || isTyping}
                 className={`absolute right-3 bottom-3 w-10 h-10 rounded-full flex items-center justify-center transition-all transform hover:scale-110 active:scale-95 ${
@@ -788,6 +915,7 @@ function App() {
       {showModal === 'models' && <ModelsModal />}
       {showModal === 'templates' && <TemplatesModal />}
       {showModal === 'about' && <AboutModal />}
+      {showModal === 'imageGen' && <ImageGenModal />}
     </div>
   );
 }

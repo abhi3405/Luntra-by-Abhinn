@@ -75,6 +75,22 @@ const MessageBubble: React.FC<MessageBubbleProps> = ({
               <MarkdownRenderer content={message.content} />
             )}
 
+            {/* Generated Images */}
+            {message.images && message.images.length > 0 && (
+              <div className="mt-3 grid gap-2" style={{ gridTemplateColumns: `repeat(auto-fit, minmax(200px, 1fr))` }}>
+                {message.images.map((imageUrl, idx) => (
+                  <div key={idx} className="rounded-lg overflow-hidden hover:shadow-lg transition-shadow">
+                    <img 
+                      src={imageUrl} 
+                      alt={`Generated: ${message.imagePrompt || 'Image'}`}
+                      className="w-full h-auto max-h-64 object-cover cursor-pointer hover:scale-105 transition-transform"
+                      onClick={() => window.open(imageUrl, '_blank')}
+                    />
+                  </div>
+                ))}
+              </div>
+            )}
+
             {/* Streaming indicator */}
             {message.isStreaming && (
               <div className="flex gap-1 mt-3">
